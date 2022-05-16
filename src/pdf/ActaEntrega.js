@@ -17,7 +17,6 @@ const ActaEntrega = (props) => {
         },
     });
 
-    const [nombreUser, setNombreUser]=useState('');
 
     useEffect(() => {
         nombre();
@@ -159,12 +158,12 @@ return (
         <Text style={[{textAlign: 'right', fontSize:'12'}]}>Entregado por</Text>
     </View>
     <View style={{flexDirection: 'row'}}>
-        <Text style={[{textAlign: 'justify', fontSize:'12',width: 300}]}>Nombre</Text>
+        <Text style={[{textAlign: 'justify', fontSize:'12',width: 300}]}>{props.usuario.nombre}</Text>
         <Text style={[{textAlign: 'right', fontSize:'12'}]}>Nombre Analista</Text>
     </View>
     <View style={{flexDirection: 'row'}}>
-        <Text style={[{textAlign: 'justify', fontSize:'12',width: 300}]}>Cedula</Text>
-        <Text style={[{textAlign: 'right', fontSize:'12'}]}>Fecha actual</Text>
+        <Text style={[{textAlign: 'justify', fontSize:'12',width: 300}]}>{props.usuario.id}</Text>
+        <Text style={[{textAlign: 'right', fontSize:'12'}]}>{props.prestamo.fecha}</Text>
     </View>
     </Page>
     </Document>

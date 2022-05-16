@@ -9,12 +9,13 @@ import AlertTitle from '@mui/material/AlertTitle';
 import Paper from '@material-ui/core/Paper';
 import { Button, InputLabel, makeStyles, MenuItem, Select, TextField, Grid, Chip } from '@material-ui/core';
 import iconprestamo from '../img/icons/prestamoicon.png';
-import equipo from '../img/icons/equipo.png'
-import { db } from './firebase-config'
+import equipo from '../img/icons/equipo.png'; 
+import { db } from './firebase-config';
 import { Stack } from '@mui/material';
-import Form_SearchEquipo from './formBuscar';
 import ActaEntrega from '../pdf/ActaEntrega.js';
 import { PDFViewer } from "@react-pdf/renderer";
+import ModalPrestamo from './compPdf/modalPdf.jsx';
+
 
 ///Constantes 
 
@@ -106,6 +107,7 @@ export default function CustomizedTimeline() {
     const [enviarUsuario, setEnviarUsuario]=useState([]);
     const [enviarequipo, setEnviarequipo]=useState([]);
 
+    const [mostrarModal, setMostrarModal]=useState(false);
 
     //Limpiar espacions
     const limpiartext = () => {
@@ -228,14 +230,13 @@ export default function CustomizedTimeline() {
                 db.collection('Leasing').doc().set(objaux);
                 alert('Se registro satisfactoriamente el prestamo')
                 limpiartext();
-
+                setMostrarModal(true);
             } catch (error) {
                 alert('Error Conexion al agregar Prestamo')
             }
         } else alert('Se debe digitar un Service TAG para el equipo valido');
-
-
     }
+    
     const validarUser = async (auxid) => {
         db.collection('UsuariosPlanta').onSnapshot((objeReg) => {
             var cont = 0;
@@ -404,6 +405,12 @@ export default function CustomizedTimeline() {
             }
         });
     }
+
+
+    const enviarEmail = ()=>{
+        
+    }
+
     useEffect(() => {
         llenadoSoftware();
     }, [])
@@ -790,7 +797,7 @@ export default function CustomizedTimeline() {
                                             variant='outlined'
                                             label='Serial Cargador'
                                             name='tagmonitor'
-                                            type='text'
+                                            type='text'                                                                                       
                                             value={obj.serial}
                                             onChange={(ev) => setSerialCargador(obj.serial)}
                                             className={classes.txt}
@@ -901,19 +908,11 @@ export default function CustomizedTimeline() {
                         className={classes.btn}
                         onClick={() => { addprestamo() }}
                     >Agregar</Button>
-                    <Button
-                        color='secondary'
-                        variant='contained'
-                        className={classes.btn}
-                        onClick={(ev)=>setVerPDF(!VerPDF)}
-                    >Ver Acta de entrega</Button>
                 </Paper>
             </div>
             {
-                VerPDF?
-                <PDFViewer style={{width: "100%",height:"90vh"}}>
-                    <ActaEntrega usuario={enviarUsuario} equipo={enviarequipo} prestamo={enviarPrestamo}/>
-                </PDFViewer>
+                mostrarModal?
+                <ModalPrestamo open={mostrarModal} usuario={enviarUsuario} equipo={enviarequipo} prestamo={enviarPrestamo}></ModalPrestamo>
                 : null
             }
         </div>

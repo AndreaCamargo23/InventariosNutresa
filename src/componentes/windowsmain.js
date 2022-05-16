@@ -12,6 +12,7 @@ import Form_SearchEquipo from './formBuscar';
 import Mantenimiento from './compConsulta/Mantenimiento';
 import Garantia from './compGarantia/addGarantia';
 import Leasing from './compLeasing/addLeasing';
+import Dashboard from './informes/informes';
 
 
 /**
@@ -138,7 +139,7 @@ const WindowsMain = (props) => {
                     <Garantia></Garantia>
                 </Route>
                 <Route path="/">
-                    <h1>Pagina inicial [noticias, equipos a vencer.......ect]</h1>
+                    <Dashboard></Dashboard>
                 </Route>
                 
             </Switch>
