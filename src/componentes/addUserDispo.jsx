@@ -60,6 +60,7 @@ export default function CustomizedTimeline() {
   const [contactoUser, setContactoUser] = useState('');
   const [cargo, setCargo] = useState('');
   const [extension, setExtension] = useState('');
+  const [actualCompania, setActualCompania] = useState('');
 
   //Constantes add user
   const [nombre, setNombre] = useState('');
@@ -67,6 +68,7 @@ export default function CustomizedTimeline() {
   const [correo, setcorreo] = useState('');
   const [contacto, setcontacto] = useState('');
   const [contrasena, setcontrasena] = useState('');
+
 
   const llenadolistR = async () => {
     try {
@@ -138,12 +140,13 @@ export default function CustomizedTimeline() {
         contacto: contactoUser,
         cargo: cargo,
         regional: regional,
+        compania: actualCompania,
         extension: extension
       }
       await db.collection('UsuariosPlanta').doc().set(obj);
       alert('Se agrego satisfactoriamente al usuario ' + nombre)
     } catch (error) {
-      alert('Error en las credenciales del usuario (correo,password (>= 6 caracteres))')
+      alert('Error en al crear el usuario')
     }
   }
   const adduser = async () => {
@@ -172,6 +175,9 @@ export default function CustomizedTimeline() {
   useEffect(() => {
     llenadolistR();
     llenadoCiudades();
+    //Guardar el nombre de la compania
+    const auxCompany = JSON.parse(sessionStorage.getItem('compania'));
+    setActualCompania(auxCompany);
   }, [])
   const classes = useStyle();
   return (

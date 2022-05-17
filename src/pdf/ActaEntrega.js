@@ -38,7 +38,7 @@ return (
     <Image src={iconprestamo} style={[{width: 130,height: 100, position: 'absolute', top: 100, left: 370}]}></Image>
     <View style={[styles.box, { height: 18, flexDirection: 'row'}]}>
         <Text style={[{textAlign: 'left', fontSize:'12', width:170}]}>Número de acta: </Text>
-        <Text style={[{textAlign: 'left', fontSize:'12'}]}>1222222222</Text>
+        <Text style={[{textAlign: 'left', fontSize:'12'}]}>{props.usuario.numActa}</Text>
     </View>
     <View style={[styles.box, { height: 18, flexDirection: 'row'}]}>
         <Text style={[{textAlign: 'left', fontSize:'12', width: 170}]}>Nombres y apellidos:</Text>

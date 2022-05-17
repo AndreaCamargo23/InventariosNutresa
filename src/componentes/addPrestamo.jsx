@@ -77,6 +77,8 @@ export default function CustomizedTimeline() {
     const [numContacto, setnumContacto] = useState('');
     const [exten, setExten] = useState('');
     const [userADS, setuserADS] = useState('');
+    const [contrato,setContrato]=useState('');
+
     //constantes equipo
     const [serviceTAG, setServiceTAG] = useState('');
     const [tipoEquipo, setTipoEquipo] = useState('');
@@ -91,9 +93,6 @@ export default function CustomizedTimeline() {
     const [descripcion, setdescripcion] = useState('');
     const [observaciones, setObservaciones] = useState('');
     //Validar si trae equipo de devolucion
-    const [EquipoDevolucion, setEquipoDevolucion] = useState(false);
-    const [analista,SetAnalista] = useState('');
-    const [arrayAnalista, setArrayAnalista] = useState([]);
     //Constantes add user
     const [iduser, setIduser] = useState('');
     //Listas de perifericos
@@ -102,7 +101,6 @@ export default function CustomizedTimeline() {
     const [arraymouse, setAarraymouse] = useState([]);
     const [arraycargador, setAarraycargador] = useState([]);
 
-    const [VerPDF, setVerPDF] = useState(false);
     const [enviarPrestamo,setEnviarPrestamo]=useState([]);
     const [enviarUsuario, setEnviarUsuario]=useState([]);
     const [enviarequipo, setEnviarequipo]=useState([]);
@@ -223,7 +221,7 @@ export default function CustomizedTimeline() {
                 }
                 const aux = db.collection('Equipos').doc(idfirebase);
                 const obj = {
-                    estado: 'Prestado',
+                    Propiedad: 'Leasing',
                 }
                 aux.update(obj);
                 setEnviarPrestamo(objaux);
@@ -257,6 +255,7 @@ export default function CustomizedTimeline() {
                     setnumContacto(auxobj.contacto);
                     setCargo(auxobj.cargo);
                     setExten(auxobj.extension);
+                    setEmpresa(auxobj.compania);
                     consultacompania(auxobj.regional);
                     cont = 1;
                     setEnviarUsuario(auxobj);
@@ -375,7 +374,7 @@ export default function CustomizedTimeline() {
     //
     //
     const validarequipo = async (auxid) => {
-        db.collection('Equipos').onSnapshot((objeReg) => {
+        await db.collection('Equipos').onSnapshot((objeReg) => {
             var cont = 0;
             objeReg.forEach((obj) => {
                 const auxobj = {
@@ -384,18 +383,28 @@ export default function CustomizedTimeline() {
                     tipo: obj.data().Tipo,
                     modelo: obj.data().Modelo,
                     marca: obj.data().Marca,
+                    contrato: obj.data().Contrato,
+                    Propiedad: obj.data().Propiedad,
+                    numActa: obj.data().NumActa,
                 }
                 if (auxobj.servicetag == auxid) {
-                    setTipoEquipo(auxobj.tipo);
-                    setMarcaEqui(auxobj.marca);
-                    setModeloEqui(auxobj.modelo);
-                    cont = 1;
-                    searchmonitor(auxid);
-                    searchteclado(auxid);
-                    searchmouses(auxid);
-                    searchcargadores(auxid);
-                    setidfirebase(auxobj.id);
-                    setEnviarequipo(auxobj);
+                    if(auxobj.Propiedad != 'Leasing'){
+                        setTipoEquipo(auxobj.tipo);
+                        setMarcaEqui(auxobj.marca);
+                        setModeloEqui(auxobj.modelo);
+                        setnumActa(auxobj.numActa);
+                        cont = 1;
+                        searchmonitor(auxid);
+                        searchteclado(auxid);
+                        searchmouses(auxid);
+                        searchcargadores(auxid);
+                        setidfirebase(auxobj.id);
+                        setEnviarequipo(auxobj);
+                        setContrato(auxobj.contrato);
+                    }else{ 
+                        alert('El equipo ya se encuentra asignado');
+                        cont=1;
+                    }
                 }
 
             });
@@ -404,11 +413,6 @@ export default function CustomizedTimeline() {
                 alert('El ServiceTAG del equipo no existe en la BD');
             }
         });
-    }
-
-
-    const enviarEmail = ()=>{
-        
     }
 
     useEffect(() => {

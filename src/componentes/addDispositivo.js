@@ -138,7 +138,8 @@ const AddDispositivo = (props) => {
     Contrato: contrato,
     Observaciones: observaciones,
     NumActa: contrato + '-' + consecutivo,
-    estado: 'Bodega',
+    estado: 'Activo',
+    Propiedad: 'Bodega',
     OrdenInt: props.valueordenanint(),
     CentralCosto: props.valuecentralcosto()
   };
