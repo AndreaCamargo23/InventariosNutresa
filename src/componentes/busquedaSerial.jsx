@@ -1,11 +1,12 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@mui/material/Button';
+import {Button,Typography} from '@mui/material/';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
+import { db } from './firebase-config';
 import {
   useGridApiRef,
   DataGridPro,
@@ -40,43 +41,6 @@ const useStyles = makeStyles(
   { defaultTheme },
 );
 
-const rows = [
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 25,
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 36,
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 19,
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 28,
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 23,
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-  },
-];
 
 function EditToolbar(props) {
   const { apiRef } = props;
@@ -113,6 +77,30 @@ EditToolbar.propTypes = {
 export default function FullFeaturedCrudGrid() {
   const classes = useStyles();
   const apiRef = useGridApiRef();
+  const [arrayEquipos,setArrayEquipos]= useState([]);
+
+
+  const selectEquipos=async()=>{
+    await db.collection('Equipos').onSnapshot((objeReg) => {
+      var equipos =[];
+      objeReg.forEach((objE) => {
+        const obj={
+          serial: objE.data().Serial,
+          Contrato: objE.data().Contrato,
+          Empresa: objE.data().Sede,
+          Sede: objE.data().Sede,
+          Propiedad: objE.data().Propiedad,
+        }
+        equipos.push(obj);
+      });
+      setArrayEquipos(equipos);
+    });
+  }
+
+  useEffect(() => {
+    selectEquipos();
+  });  
+
 
   const handleRowEditStart = (params, event) => {
     event.defaultMuiPrevented = true;
@@ -151,19 +139,30 @@ export default function FullFeaturedCrudGrid() {
     }
   };
 
+  const row=[
+
+  ]
+
   const columns = [
-    { field: 'name', headerName: 'Name', width: 180, editable: true },
-    { field: 'age', headerName: 'Age', type: 'number', editable: true },
+    { field: 'serial', headerName: 'Service TAG', width: 180, editable: false },
+    { field: 'Contrato', headerName: 'Contrato', type: 'number', editable: true },
     {
-      field: 'dateCreated',
-      headerName: 'Date Created',
+      field: 'Empresa',
+      headerName: 'Empresa',
       type: 'date',
       width: 180,
       editable: true,
     },
     {
-      field: 'lastLogin',
-      headerName: 'Last Login',
+      field: 'Sede',
+      headerName: 'Sede',
+      type: 'dateTime',
+      width: 220,
+      editable: true,
+    },
+    {
+      field: 'Propiedad',
+      headerName: 'Propiedad',
       type: 'dateTime',
       width: 220,
       editable: true,
@@ -216,8 +215,9 @@ export default function FullFeaturedCrudGrid() {
 
   return (
     <div style={{ height: 500, width: '100%' }}>
+      <Typography variant="h6">{arrayEquipos.serial}</Typography>
       <DataGridPro
-        rows={rows}
+        rows={row}
         columns={columns}
         apiRef={apiRef}
         editMode="row"

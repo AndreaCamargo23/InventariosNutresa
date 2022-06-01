@@ -10,6 +10,7 @@ import { auth } from './firebase-config'
 import cerraS from '../img/icons/salida.png'
 import { NavLink } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+import SvgIcon from '@mui/material/SvgIcon';
 
 /**
  * Este componente se crea lo que son los navLink, para establecer la navegbilidad
@@ -109,6 +110,14 @@ function a11yProps(index) {
   };
 }
 
+function HomeIcon(props) {
+  return (
+    <SvgIcon {...props}>
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+    </SvgIcon>
+  );
+}
+
 export default function SearchAppBar(props) {
   const history = useHistory();
   const [pAdmin,setPadmin] = useState(false);
@@ -132,6 +141,21 @@ export default function SearchAppBar(props) {
             scrollButtons="auto"
             aria-label="scrollable auto tabs example"
           >
+            <NavLink to="/"
+              style={{
+                fontWeight: "bold",
+                color: "#FFFFFF",
+                textDecoration: "none",
+              }}
+              activeStyle={{
+                fontWeight: "bold",
+                color: "#FFFFFF",
+                textDecoration: "none",
+              }}
+            ><Tab label="Home" {...a11yProps(1)}>
+            </Tab>
+            </NavLink>
+
             <NavLink to="/admindatos"
               style={{
                 fontWeight: "bold",

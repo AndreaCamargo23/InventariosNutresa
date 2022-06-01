@@ -78,7 +78,7 @@ export default function Lista(){
                     <ListItemIcon>
                         <div className={classes.div}>
                             <img className={classes.img} src={Icoprestamo} />
-                            <ListItemText className={classes.itemtext} primary='Generar prestamo' />
+                            <ListItemText className={classes.itemtext} primary='Asignar Equipo' />
                         </div>
                     </ListItemIcon>
                 </ListItem>
